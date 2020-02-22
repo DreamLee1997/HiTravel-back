@@ -2,9 +2,9 @@
  * @Descripttion: 
  * @version: 
  * @Author: lixiang
- * @Date: 2020-01-31 12:37:44
+ * @Date: 2020-01-09 19:48:30
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:56:28
+ * @LastEditTime: 2020-02-22 17:29:42
  -->
 <template>
   <div class="app-container">
@@ -14,17 +14,17 @@
         <span>筛选搜索</span>
         <el-button style="float: right" @click="handleSearchList()" type="primary" size="small">查询结果</el-button>
         <el-button
-          style="float: right;margin-right: 15px"
+          style="float: right; margin-right: 15px"
           @click="handleResetSearch()"
           size="small"
         >重置</el-button>
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="街道编码：">
-            <el-input style="width: 203px" v-model="listQuery.streetCode" placeholder="商品名称"></el-input>
+          <el-form-item label="城市编码：">
+            <el-input style="width: 203px" v-model="listQuery.cityCode" placeholder="商品名称"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="酒店状态：">
+          <el-form-item label="景区状态：">
             <el-select v-model="listQuery.status" placeholder="请选择">
               <el-option
                 v-for="item in statusOptions"
@@ -33,7 +33,7 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -44,27 +44,28 @@
     </el-card>
     <div class="table-container">
       <el-table ref="productTable" :data="list" style="width: 100%" v-loading="listLoading" border>
-        <el-table-column label="编号" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.hotelId}}</template>
+        <el-table-column label="编号" width="70" align="center">
+          <template slot-scope="scope">{{scope.row.scenicId}}</template>
         </el-table-column>
-        <el-table-column label="酒店图片" width="120" align="center">
+        <el-table-column label="景区图片" width="120" align="center">
           <template slot-scope="scope">
             <img style="height: 80px" :src="'http://101.132.138.185:8080/'+scope.row.img" />
           </template>
         </el-table-column>
         <el-table-column
-          label="酒店名称"
-          prop="hotelName"
+          label="景区名称"
+          prop="scenicName"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
         <el-table-column
-          label="酒店编码"
-          prop="hotelCardId"
+          label="景区编码"
+          prop="scenicCardId"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
-        <el-table-column label="街道编码" prop="streetCode" width="120" align="center"></el-table-column>
+        <el-table-column label="城市编码" prop="cityCode" align="center"></el-table-column>
+        <el-table-column label="城市名称" prop="cityName" align="center"></el-table-column>
         <el-table-column label="注册人姓名" prop="realname" width="100" align="center"></el-table-column>
         <el-table-column label="身份证ID" prop="cardId" width="100" align="center"></el-table-column>
         <el-table-column label="手机号" prop="phone" width="100" align="center"></el-table-column>
@@ -72,13 +73,13 @@
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row |formatHotelStatus}}</template>
         </el-table-column>
-        <el-table-column label="创建时间" :show-overflow-tooltip="istooltip" align="center">
+        <el-table-column label="创建时间" :show-overflow-tooltip="istooltip" width="110" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" :show-overflow-tooltip="istooltip" width="160" align="center">
+        <el-table-column label="操作" :show-overflow-tooltip="istooltip" width="110" align="center">
           <template slot-scope="scope">
             <p>
-              <el-button size="mini" @click="handleVerify(scope.$index, scope.row)">审核</el-button>
+              <!-- <el-button size="mini" @click="handleUpdateProduct(scope.$index, scope.row)">编辑</el-button> -->
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </p>
           </template>
@@ -99,17 +100,17 @@
   </div>
 </template>
 <script>
-import { fetchList, deleteHotel, verifyHotel } from "@/api/hotel";
+import { fetchList, deleteHotel } from "@/api/scenic";
 // import {fetchList as fetchSkuStockList,update as updateSkuStockList} from '@/api/skuStock'
 
 const defaultListQuery = {
-  streetCode: "",
+  cityCode: "",
   page: 1,
   size: 10,
-  status: 0 //0 未审核 1 审核 2 删除的 不传所有
+  status: '' //0 未审核 1 审核 2 删除的 不传所有
 };
 export default {
-  name: "hotelVerify",
+  name: "scenic",
   data() {
     return {
       listQuery: Object.assign({}, defaultListQuery),
@@ -148,14 +149,14 @@ export default {
     }
   },
   methods: {
-    //酒店列表
+    //景区列表
     getList() {
       this.listLoading = true;
       //请求数据
       fetchList(
         this.listQuery.page,
         this.listQuery.size,
-        this.listQuery.streetCode,
+        this.listQuery.cityCode,
         this.listQuery.status
       ).then(response => {
         this.listLoading = false;
@@ -163,23 +164,7 @@ export default {
         this.total = response.data.total;
       });
     },
-    handleVerify(index, row) {
-      let self = this;
-      self.$confirm("该酒店是否通过审核", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-      }).then(() => {
-          verifyHotel(row.hotelId).then(response => {
-              self.$message({
-                  message: "审核成功",
-                  type: "success",
-                  duration: 1000
-              });
-              self.getList();
-          });
-      });
-    },
+    handleUpdateProduct() {},
     handleDelete(index, row) {
       let self = this;
       self.$confirm("是否确认删除", "提示", {
@@ -216,24 +201,9 @@ export default {
 };
 </script>
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
+
 </style>
+
+
 
 

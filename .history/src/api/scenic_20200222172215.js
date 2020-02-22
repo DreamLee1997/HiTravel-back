@@ -2,25 +2,25 @@
  * @Descripttion: 
  * @version: 
  * @Author: lixiang
- * @Date: 2020-02-01 11:29:57
+ * @Date: 2020-02-22 17:20:31
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:52:33
+ * @LastEditTime: 2020-02-22 17:22:15
  */
 import request from '@/utils/request'
 
-export function fetchList(pageNo, pageSize, streetCode, status) {
-  if (streetCode != 'undefined') {
+export function fetchList(pageNo, pageSize, cityCode, status) {
+  if (cityCode != 'undefined') {
     return request({
-      url: status != 'undefined' ? ('/hotel/queryByPageForAdmin?streetCode=' + streetCode
+      url: status != 'undefined' ? ('/scenic/queryByPage?cityCode=' + cityCode
         + '&status=' + status + '&pageNo=' + pageNo + '&pageSize=' + pageSize)
-        : ('/hotel/queryByPageForAdmin?streetCode=' + streetCode + '&pageNo=' + pageNo + '&pageSize=' + pageSize),
+        : ('/scenic/queryByPage?cityCode=' + cityCode + '&pageNo=' + pageNo + '&pageSize=' + pageSize),
       method: 'post',
     })
   } else {
     return request({
-      url: status != 'undefined' ? ('/hotel/queryByPageForAdmin?status=' + status 
+      url: status != 'undefined' ? ('/scenic/queryByPage?status=' + status 
         + '&pageNo=' + pageNo + '&pageSize=' + pageSize)
-        : ('/hotel/queryByPageForAdmin?pageNo=' + pageNo + '&pageSize=' + pageSize),
+        : ('/scenic/queryByPage?pageNo=' + pageNo + '&pageSize=' + pageSize),
       method: 'post',
     })
   }

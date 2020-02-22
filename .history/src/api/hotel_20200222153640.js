@@ -4,11 +4,11 @@
  * @Author: lixiang
  * @Date: 2020-02-01 11:29:57
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:52:33
+ * @LastEditTime: 2020-02-22 15:36:35
  */
 import request from '@/utils/request'
 
-export function fetchList(pageNo, pageSize, streetCode, status) {
+export function fetchList(pageNo, pageSize, streetCode) {
   if (streetCode != 'undefined') {
     return request({
       url: status != 'undefined' ? ('/hotel/queryByPageForAdmin?streetCode=' + streetCode
@@ -24,18 +24,4 @@ export function fetchList(pageNo, pageSize, streetCode, status) {
       method: 'post',
     })
   }
-}
-
-export function deleteHotel(hotelId) {
-  return request({
-    url: '/hotel/delete?hotelId=' + hotelId,
-    method: 'get',
-  })
-}
-
-export function verifyHotel(hotelId) {
-  return request({
-    url: '/hotel/passVerify?hotelId=' + hotelId,
-    method: 'get',
-  })
 }

@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-01-31 12:37:44
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:56:28
+ * @LastEditTime: 2020-02-22 15:56:06
  -->
 <template>
   <div class="app-container">
@@ -165,7 +165,7 @@ export default {
     },
     handleVerify(index, row) {
       let self = this;
-      self.$confirm("该酒店是否通过审核", "提示", {
+      self.$confirm("是否确认审核通过改酒店", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"

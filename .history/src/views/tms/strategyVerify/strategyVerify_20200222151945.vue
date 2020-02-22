@@ -2,11 +2,11 @@
  * @Descripttion: 
  * @version: 
  * @Author: lixiang
- * @Date: 2020-02-10 13:52:50
+ * @Date: 2020-02-10 13:53:41
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:50:09
+ * @LastEditTime: 2020-02-22 15:19:45
  -->
-<template>
+ <template>
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
       <div style="height:30px;">
@@ -28,10 +28,10 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="关联城市编码：">
+          <el-form-item label="关联城市：">
             <el-input style="width: 203px" v-model="listQuery.cityCode" placeholder="商品名称"></el-input>
           </el-form-item>
-          <el-form-item label="攻略状态：">
+          <!-- <el-form-item label="攻略状态：">
             <el-select v-model="listQuery.status" placeholder="请选择">
               <el-option
                 v-for="item in statusOptions"
@@ -40,7 +40,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
     </el-card>
@@ -50,20 +50,18 @@
     </el-card>
     <div class="table-container">
       <el-table ref="strategyTable" :data="list" style="width: 100%" v-loading="listLoading" border>
-        <el-table-column label="编号" width="70" align="center">
+        <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.articleId}}</template>
         </el-table-column>
         <el-table-column
           label="攻略标题"
           prop="title"
-          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
         <el-table-column
           label="创建时间"
           prop="createTime"
-          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
@@ -73,13 +71,28 @@
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
-        <el-table-column label="城市名称" prop="cityName"  align="center"></el-table-column>
-        <el-table-column label="收藏" prop="collection" width="70" align="center"></el-table-column>
-        <el-table-column label="点赞" prop="praise" width="70" align="center"></el-table-column>
-        <el-table-column label="浏览量" prop="view" width="70" align="center"></el-table-column>
-        <el-table-column label="用户ID" prop="userId" width="70" align="center"></el-table-column>
+        <el-table-column label="城市名称" prop="cityName" width="120" align="center"></el-table-column>
+        <el-table-column label="收藏" prop="collection" width="100" align="center"></el-table-column>
+        <el-table-column label="点赞" prop="praise" width="100" align="center"></el-table-column>
+        <el-table-column label="浏览量" prop="view" width="100" align="center"></el-table-column>
+        <el-table-column label="用户ID" prop="userId" width="100" align="center"></el-table-column>
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row |formatHotelStatus}}</template>
+        </el-table-column>
+        <el-table-column label="操作" :show-overflow-tooltip='istooltip' width="160"   align="center">
+          <template slot-scope="scope">
+            <p>
+              <el-button
+                size="mini"
+                @click="handleVerify(scope.$index, scope.row)">审核
+              </el-button>
+              <!-- <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button> -->
+            </p>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -98,12 +111,12 @@
 </template>
 <script>
 import { formatDate } from "@/utils/date";
-import { fetchList } from "@/api/strategy";
+import { fetchList, verifyStrategy } from "@/api/strategy";
 const defaultListQuery = {
   cityCode: '', //非必传
   page: 1,
   size: 10,
-  status: '', //0-未审核,1-已审核，不传全部攻略
+  status: 0, //0-未审核,1-已审核，不传全部攻略
   type: 0 //0-最新 1-点赞数 ,必传
 };
 export default {
@@ -153,6 +166,24 @@ export default {
         this.total = response.data.total;
       });
     },
+    //审核攻略
+    handleVerify(index, row){
+      let self = this;
+      self.$confirm("是否确认审核通过", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+      }).then(() => {
+          verifyStrategy(row.articleId).then(response => {
+              self.$message({
+                  message: "审核成功",
+                  type: "success",
+                  duration: 1000
+              });
+              self.getList();
+          });
+      });
+    },
     handleSizeChange(val) {
       this.listQuery.size = val;
       this.getList();
@@ -172,5 +203,7 @@ export default {
 };
 </script>
 <style></style>
+
+
 
 

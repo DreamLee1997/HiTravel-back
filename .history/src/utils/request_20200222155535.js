@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-01-09 19:48:30
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 16:18:51
+ * @LastEditTime: 2020-02-22 15:55:35
  */
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
@@ -23,7 +23,7 @@ service.defaults.baseURL = '/apis'
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
-    config.headers['token'] = store.getters.token // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   return config
 }, error => {
@@ -45,9 +45,9 @@ service.interceptors.response.use(
         type: 'error',
         duration: 3 * 1000
       })
-      // if (res.data.indexOf("请重新登录") != -1) {
-      //   router.push({ path: "/login" });
-      // }
+      if (res.data.indexOf("请重新登录") != -1) {
+        router.push({ path: "/login" });
+      }
       // 401:未登录;
       if (res.code === 401||res.code === 403) {
         MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {

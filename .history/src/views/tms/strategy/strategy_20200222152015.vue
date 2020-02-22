@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-02-10 13:52:50
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:50:09
+ * @LastEditTime: 2020-02-22 15:20:15
  -->
 <template>
   <div class="app-container">
@@ -50,20 +50,18 @@
     </el-card>
     <div class="table-container">
       <el-table ref="strategyTable" :data="list" style="width: 100%" v-loading="listLoading" border>
-        <el-table-column label="编号" width="70" align="center">
+        <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.articleId}}</template>
         </el-table-column>
         <el-table-column
           label="攻略标题"
           prop="title"
-          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
         <el-table-column
           label="创建时间"
           prop="createTime"
-          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
@@ -73,11 +71,11 @@
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
-        <el-table-column label="城市名称" prop="cityName"  align="center"></el-table-column>
-        <el-table-column label="收藏" prop="collection" width="70" align="center"></el-table-column>
-        <el-table-column label="点赞" prop="praise" width="70" align="center"></el-table-column>
-        <el-table-column label="浏览量" prop="view" width="70" align="center"></el-table-column>
-        <el-table-column label="用户ID" prop="userId" width="70" align="center"></el-table-column>
+        <el-table-column label="城市名称" prop="cityName" width="120" align="center"></el-table-column>
+        <el-table-column label="收藏" prop="collection" width="100" align="center"></el-table-column>
+        <el-table-column label="点赞" prop="praise" width="100" align="center"></el-table-column>
+        <el-table-column label="浏览量" prop="view" width="100" align="center"></el-table-column>
+        <el-table-column label="用户ID" prop="userId" width="100" align="center"></el-table-column>
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row |formatHotelStatus}}</template>
         </el-table-column>
@@ -126,6 +124,7 @@ export default {
   },
   created() {
     this.getList();
+    // this.getProductList();
   },
   filters: {
     formatHotelStatus(row) {

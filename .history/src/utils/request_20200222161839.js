@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-01-09 19:48:30
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 16:18:51
+ * @LastEditTime: 2020-02-22 16:18:38
  */
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
@@ -23,7 +23,7 @@ service.defaults.baseURL = '/apis'
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
-    config.headers['token'] = store.getters.token // 让每个请求携带自定义token 请根据实际情况自行修改
+    config.headers['token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
   return config
 }, error => {

@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-02-10 13:52:50
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:50:09
+ * @LastEditTime: 2020-02-22 15:25:05
  -->
 <template>
   <div class="app-container">
@@ -126,6 +126,7 @@ export default {
   },
   created() {
     this.getList();
+    // this.getProductList();
   },
   filters: {
     formatHotelStatus(row) {

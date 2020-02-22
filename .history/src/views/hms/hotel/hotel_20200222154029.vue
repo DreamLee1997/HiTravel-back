@@ -1,11 +1,3 @@
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: lixiang
- * @Date: 2020-01-31 12:37:44
- * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:56:28
- -->
 <template>
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
@@ -24,7 +16,7 @@
           <el-form-item label="街道编码：">
             <el-input style="width: 203px" v-model="listQuery.streetCode" placeholder="商品名称"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="酒店状态：">
+          <el-form-item label="酒店状态：">
             <el-select v-model="listQuery.status" placeholder="请选择">
               <el-option
                 v-for="item in statusOptions"
@@ -33,14 +25,14 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
-      <!-- <el-button class="btn-add" type="primary" @click="handleAddProduct()" size="mini">添加</el-button> -->
+      <el-button class="btn-add" type="primary" @click="handleAddProduct()" size="mini">添加</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="productTable" :data="list" style="width: 100%" v-loading="listLoading" border>
@@ -78,7 +70,7 @@
         <el-table-column label="操作" :show-overflow-tooltip="istooltip" width="160" align="center">
           <template slot-scope="scope">
             <p>
-              <el-button size="mini" @click="handleVerify(scope.$index, scope.row)">审核</el-button>
+              <el-button size="mini" @click="handleUpdateProduct(scope.$index, scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </p>
           </template>
@@ -99,17 +91,17 @@
   </div>
 </template>
 <script>
-import { fetchList, deleteHotel, verifyHotel } from "@/api/hotel";
+import { fetchList } from "@/api/hotel";
 // import {fetchList as fetchSkuStockList,update as updateSkuStockList} from '@/api/skuStock'
 
 const defaultListQuery = {
   streetCode: "",
   page: 1,
   size: 10,
-  status: 0 //0 未审核 1 审核 2 删除的 不传所有
+  status: "" //0 未审核 1 审核 2 删除的 不传所有
 };
 export default {
-  name: "hotelVerify",
+  name: "productList",
   data() {
     return {
       listQuery: Object.assign({}, defaultListQuery),
@@ -123,7 +115,7 @@ export default {
           value: 0
         },
         {
-          label: "已审核",
+          label: "审核",
           value: 1
         },
         {
@@ -135,6 +127,7 @@ export default {
   },
   created() {
     this.getList();
+    // this.getProductCateList();  //商品分类
   },
   filters: {
     formatHotelStatus(row) {
@@ -148,7 +141,7 @@ export default {
     }
   },
   methods: {
-    //酒店列表
+    //商品列表
     getList() {
       this.listLoading = true;
       //请求数据
@@ -163,23 +156,7 @@ export default {
         this.total = response.data.total;
       });
     },
-    handleVerify(index, row) {
-      let self = this;
-      self.$confirm("该酒店是否通过审核", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-      }).then(() => {
-          verifyHotel(row.hotelId).then(response => {
-              self.$message({
-                  message: "审核成功",
-                  type: "success",
-                  duration: 1000
-              });
-              self.getList();
-          });
-      });
-    },
+    handleUpdateProduct() {},
     handleDelete(index, row) {
       let self = this;
       self.$confirm("是否确认删除", "提示", {
@@ -187,7 +164,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
       }).then(() => {
-          deleteHotel(row.hotelId).then(response => {
+          deleteHotel(row.articleId).then(response => {
               self.$message({
                   message: "删除成功",
                   type: "success",

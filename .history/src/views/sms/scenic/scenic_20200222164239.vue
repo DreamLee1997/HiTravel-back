@@ -2,9 +2,9 @@
  * @Descripttion: 
  * @version: 
  * @Author: lixiang
- * @Date: 2020-01-31 12:37:44
+ * @Date: 2020-01-09 19:48:30
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:56:28
+ * @LastEditTime: 2020-02-22 16:42:39
  -->
 <template>
   <div class="app-container">
@@ -24,7 +24,7 @@
           <el-form-item label="街道编码：">
             <el-input style="width: 203px" v-model="listQuery.streetCode" placeholder="商品名称"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="酒店状态：">
+          <el-form-item label="酒店状态：">
             <el-select v-model="listQuery.status" placeholder="请选择">
               <el-option
                 v-for="item in statusOptions"
@@ -33,7 +33,7 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
@@ -78,7 +78,7 @@
         <el-table-column label="操作" :show-overflow-tooltip="istooltip" width="160" align="center">
           <template slot-scope="scope">
             <p>
-              <el-button size="mini" @click="handleVerify(scope.$index, scope.row)">审核</el-button>
+              <!-- <el-button size="mini" @click="handleUpdateProduct(scope.$index, scope.row)">编辑</el-button> -->
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </p>
           </template>
@@ -99,17 +99,17 @@
   </div>
 </template>
 <script>
-import { fetchList, deleteHotel, verifyHotel } from "@/api/hotel";
+import { fetchList, deleteHotel } from "@/api/hotel";
 // import {fetchList as fetchSkuStockList,update as updateSkuStockList} from '@/api/skuStock'
 
 const defaultListQuery = {
   streetCode: "",
   page: 1,
   size: 10,
-  status: 0 //0 未审核 1 审核 2 删除的 不传所有
+  status: '' //0 未审核 1 审核 2 删除的 不传所有
 };
 export default {
-  name: "hotelVerify",
+  name: "hotel",
   data() {
     return {
       listQuery: Object.assign({}, defaultListQuery),
@@ -163,23 +163,7 @@ export default {
         this.total = response.data.total;
       });
     },
-    handleVerify(index, row) {
-      let self = this;
-      self.$confirm("该酒店是否通过审核", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-      }).then(() => {
-          verifyHotel(row.hotelId).then(response => {
-              self.$message({
-                  message: "审核成功",
-                  type: "success",
-                  duration: 1000
-              });
-              self.getList();
-          });
-      });
-    },
+    handleUpdateProduct() {},
     handleDelete(index, row) {
       let self = this;
       self.$confirm("是否确认删除", "提示", {
@@ -216,24 +200,9 @@ export default {
 };
 </script>
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
+
 </style>
+
+
 
 

@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-01-31 12:37:44
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:56:28
+ * @LastEditTime: 2020-02-22 15:49:35
  -->
 <template>
   <div class="app-container">
@@ -99,14 +99,14 @@
   </div>
 </template>
 <script>
-import { fetchList, deleteHotel, verifyHotel } from "@/api/hotel";
+import { fetchList, deleteHotel } from "@/api/hotel";
 // import {fetchList as fetchSkuStockList,update as updateSkuStockList} from '@/api/skuStock'
 
 const defaultListQuery = {
   streetCode: "",
   page: 1,
   size: 10,
-  status: 0 //0 未审核 1 审核 2 删除的 不传所有
+  status: '' //0 未审核 1 审核 2 删除的 不传所有
 };
 export default {
   name: "hotelVerify",
@@ -135,6 +135,7 @@ export default {
   },
   created() {
     this.getList();
+    // this.getProductCateList();  //商品分类
   },
   filters: {
     formatHotelStatus(row) {
@@ -165,14 +166,14 @@ export default {
     },
     handleVerify(index, row) {
       let self = this;
-      self.$confirm("该酒店是否通过审核", "提示", {
+      self.$confirm("是否确认删除", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
       }).then(() => {
-          verifyHotel(row.hotelId).then(response => {
+          deleteHotel(row.hotelId).then(response => {
               self.$message({
-                  message: "审核成功",
+                  message: "删除成功",
                   type: "success",
                   duration: 1000
               });
