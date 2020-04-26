@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-02-10 13:53:41
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:19:45
+ * @LastEditTime: 2020-04-12 16:18:06
  -->
  <template>
   <div class="app-container">
@@ -28,7 +28,7 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="关联城市：">
+          <el-form-item label="关联城市编码：">
             <el-input style="width: 203px" v-model="listQuery.cityCode" placeholder="商品名称"></el-input>
           </el-form-item>
           <!-- <el-form-item label="攻略状态：">
@@ -50,18 +50,20 @@
     </el-card>
     <div class="table-container">
       <el-table ref="strategyTable" :data="list" style="width: 100%" v-loading="listLoading" border>
-        <el-table-column label="编号" width="100" align="center">
+        <el-table-column label="编号" width="70" align="center">
           <template slot-scope="scope">{{scope.row.articleId}}</template>
         </el-table-column>
         <el-table-column
           label="攻略标题"
           prop="title"
+          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
         <el-table-column
           label="创建时间"
           prop="createTime"
+          width="120"
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
@@ -71,19 +73,20 @@
           :show-overflow-tooltip="istooltip"
           align="center"
         ></el-table-column>
-        <el-table-column label="城市名称" prop="cityName" width="120" align="center"></el-table-column>
-        <el-table-column label="收藏" prop="collection" width="100" align="center"></el-table-column>
-        <el-table-column label="点赞" prop="praise" width="100" align="center"></el-table-column>
-        <el-table-column label="浏览量" prop="view" width="100" align="center"></el-table-column>
-        <el-table-column label="用户ID" prop="userId" width="100" align="center"></el-table-column>
+        <el-table-column label="城市名称" prop="cityName"  align="center"></el-table-column>
+        <el-table-column label="收藏" prop="collection" width="70" align="center"></el-table-column>
+        <el-table-column label="点赞" prop="praise" width="70" align="center"></el-table-column>
+        <el-table-column label="浏览量" prop="view" width="70" align="center"></el-table-column>
+        <el-table-column label="用户ID" prop="userId" width="70" align="center"></el-table-column>
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row |formatHotelStatus}}</template>
         </el-table-column>
-        <el-table-column label="操作" :show-overflow-tooltip='istooltip' width="160"   align="center">
+        <el-table-column label="操作" :show-overflow-tooltip='istooltip' width="110"   align="center">
           <template slot-scope="scope">
             <p>
               <el-button
                 size="mini"
+                type="primary"
                 @click="handleVerify(scope.$index, scope.row)">审核
               </el-button>
               <!-- <el-button
@@ -169,9 +172,9 @@ export default {
     //审核攻略
     handleVerify(index, row){
       let self = this;
-      self.$confirm("是否确认审核通过", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+      self.$confirm("是否审核通过", "提示", {
+          confirmButtonText: "通过",
+          cancelButtonText: "拒绝",
           type: "warning"
       }).then(() => {
           verifyStrategy(row.articleId).then(response => {

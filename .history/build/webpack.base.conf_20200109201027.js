@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-01-09 19:48:30
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-28 14:54:51
+ * @LastEditTime: 2020-01-09 20:10:28
  */
 'use strict'
 const path = require('path')
@@ -26,10 +26,9 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: './'
-    // publicPath: process.env.NODE_ENV === 'production'
-    //   ? config.build.assetsPublicPath
-    //   : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

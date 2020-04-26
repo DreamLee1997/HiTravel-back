@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-02-10 13:53:41
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:24:22
+ * @LastEditTime: 2020-04-12 16:18:06
  -->
  <template>
   <div class="app-container">
@@ -172,9 +172,9 @@ export default {
     //审核攻略
     handleVerify(index, row){
       let self = this;
-      self.$confirm("是否确认审核通过", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+      self.$confirm("是否审核通过", "提示", {
+          confirmButtonText: "通过",
+          cancelButtonText: "拒绝",
           type: "warning"
       }).then(() => {
           verifyStrategy(row.articleId).then(response => {

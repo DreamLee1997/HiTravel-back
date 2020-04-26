@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: lixiang
+ * @Date: 2020-01-09 19:48:30
+ * @LastEditors: lixiang
+ * @LastEditTime: 2020-02-28 14:40:21
+ */
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -9,7 +17,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     // proxyTable: {
     //   '/apis': {
     //     // 测试环境
@@ -23,7 +31,9 @@ module.exports = {
     proxyTable: {
       '/apis': {
         //测试环境
-        target: 'http://wuweijie.net:8088/',
+        
+        target: 'http://101.132.138.185:8080/',
+        // target: 'http://wuweijie.net:8088/',
         changeOrigin: true,
         pathRewrite:{
           '^/apis': '/'  //需要rewrite重写的
@@ -33,7 +43,7 @@ module.exports = {
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -63,7 +73,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

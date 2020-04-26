@@ -4,7 +4,7 @@
  * @Author: lixiang
  * @Date: 2020-02-10 13:52:50
  * @LastEditors: lixiang
- * @LastEditTime: 2020-02-22 15:50:09
+ * @LastEditTime: 2020-02-23 13:53:31
  -->
 <template>
   <div class="app-container">
@@ -81,6 +81,17 @@
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">{{scope.row |formatHotelStatus}}</template>
         </el-table-column>
+        <el-table-column label="操作" :show-overflow-tooltip='istooltip' width="110"   align="center">
+          <template slot-scope="scope">
+            <p>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button>
+            </p>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
@@ -98,7 +109,7 @@
 </template>
 <script>
 import { formatDate } from "@/utils/date";
-import { fetchList } from "@/api/strategy";
+import { fetchList, deleteArticle } from "@/api/strategy";
 const defaultListQuery = {
   cityCode: '', //非必传
   page: 1,
@@ -151,6 +162,23 @@ export default {
         this.listLoading = false;
         this.list = response.data.records;
         this.total = response.data.total;
+      });
+    },
+    handleDelete(index, row){
+      let self = this;
+      self.$confirm("是否确认删除", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+      }).then(() => {
+          deleteArticle(row.articleId).then(response => {
+              self.$message({
+                  message: "删除成功",
+                  type: "success",
+                  duration: 1000
+              });
+              self.getList();
+          });
       });
     },
     handleSizeChange(val) {
